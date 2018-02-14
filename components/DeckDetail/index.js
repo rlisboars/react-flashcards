@@ -13,6 +13,7 @@ export default class DeckDetail extends PureComponent {
   }
 
   render() {
+    const { navigate } = this.props.navigation
     return (
       <Container>
         <SubHeader>
@@ -47,10 +48,10 @@ export default class DeckDetail extends PureComponent {
             <HistoryScore green>100%</HistoryScore>
             <HistoryScore green>100%</HistoryScore>
           </HistoryContainer>
-          <Button>
+          <Button onPress={() => navigate('Card')}>
             <ButtonLabel>start</ButtonLabel>
           </Button>
-          <Button outline>
+          <Button onPress={() => navigate('AddCard')} outline>
             <ButtonLabel outline>add card</ButtonLabel>
           </Button>
         </Deck>

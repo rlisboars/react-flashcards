@@ -24,13 +24,20 @@ export default class DeckSwiper extends PureComponent {
   }
 
   render() {
+    const { data, selected } = this.props.navigation.state.params
     return (
-      <Swiper loop={false} showsPagination={false} loadMinimal={true} ref={component => this.swiper = component} >
-        <DeckDetail swipe={this.swipe} first />
-        <DeckDetail swipe={this.swipe} />
-        <DeckDetail swipe={this.swipe} />
-        <DeckDetail swipe={this.swipe} />
-        <DeckDetail swipe={this.swipe} last />
+      <Swiper index={selected} loop={false} showsPagination={false} loadMinimal={true} ref={component => this.swiper = component} >
+        {
+          data.map((deck, idx) => {
+            return <DeckDetail 
+                      swipe={this.swipe} 
+                      navigation={this.props.navigation} 
+                      deck={deck} 
+                      key={idx} 
+                      first={idx === 0}
+                      last={idx === data.length-1}/>
+          })
+        }
       </Swiper>
     )
   }

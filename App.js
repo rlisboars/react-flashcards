@@ -10,15 +10,15 @@ import Card from './components/Card'
 import Colors from './utils/colors'
 
 const MainNavigator = StackNavigator({
-  // DecksList: {
-  //   screen: DecksList,
-  // },
-  // DeckSwiper: {
-  //   screen: DeckSwiper,
-  // },
-  // AddCard: {
-  //   screen: AddCard,
-  // },
+  DecksList: {
+    screen: DecksList,
+  }, 
+  DeckSwiper: {
+     screen: DeckSwiper,
+  },
+   AddCard: {
+     screen: AddCard,
+   },
   Card: {
     screen: Card
   }
