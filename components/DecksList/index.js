@@ -9,10 +9,12 @@ import { initialData } from '../../utils/storage'
 export default class DecksList extends PureComponent {
   static navigationOptions = {
     title: 'FLASHCARDS',
+    headerBackTitle: null,
     ...navOptions,
   }
 
   componentDidMount() {
+    AsyncStorage.removeItem('deckData')
     AsyncStorage.getItem('deckData')
       .then(result => {
         if (!result) {

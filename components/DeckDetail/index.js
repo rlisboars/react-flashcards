@@ -14,6 +14,7 @@ export default class DeckDetail extends PureComponent {
 
   render() {
     const { navigate } = this.props.navigation
+    const { deck } = this.props
     return (
       <Container>
         <SubHeader>
@@ -25,7 +26,7 @@ export default class DeckDetail extends PureComponent {
               }
             </TouchableOpacity>
           }
-          <Title>Deck Title</Title>
+          <Title>{deck.title}</Title>
           { !this.props.last && 
             <TouchableOpacity onPress={() => this.props.swipe('RIGHT')}>
               { Platform.OS === 'ios' 
@@ -36,7 +37,7 @@ export default class DeckDetail extends PureComponent {
           }
         </SubHeader>
         <Deck>  
-          <CardsQtt>15</CardsQtt>
+          <CardsQtt>{deck.questions.length}</CardsQtt>
           <CardsLabel>cards</CardsLabel>
           <Label>last score</Label>
           <Score green>80%</Score>
@@ -48,7 +49,7 @@ export default class DeckDetail extends PureComponent {
             <HistoryScore green>100%</HistoryScore>
             <HistoryScore green>100%</HistoryScore>
           </HistoryContainer>
-          <Button onPress={() => navigate('Card')}>
+          <Button onPress={() => navigate('Card', deck)}>
             <ButtonLabel>start</ButtonLabel>
           </Button>
           <Button onPress={() => navigate('AddCard')} outline>

@@ -38,6 +38,6 @@ padding: 0 5px 0 5px;
 export const navOptions = {
   headerTintColor: Colors.grade6,
   headerStyle: {
-    backgroundColor: Colors.grade4
+    backgroundColor: Colors.grade4,
   }
 }

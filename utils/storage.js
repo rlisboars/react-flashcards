@@ -33,5 +33,11 @@ export const initialData = [{
       },
     ],
     statistics: {}
+  },
+  {
+    title: 'Deck 3',
+    questions: [
+    ],
+    statistics: {}
   }
 ]
