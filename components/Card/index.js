@@ -19,12 +19,25 @@ export default class Card extends PureComponent {
     super(props)
     this.state = {
       current: 0, 
-      showAnswer: false
+      showAnswer: false,
+      score: Array(props.navigation.state.params.deck.questions.length).fill(false)
     }
   }
 
-  correctAnswer = () => {
-    const questionsCount = this.props.navigation.state.params.questions.length
+  answer = (result) => {
+    const questionsCount = this.props.navigation.state.params.deck.questions.length
+    const updateScore = this.props.navigation.state.params.updateScore
+    if (this.state.current <= questionsCount-1) {
+      let score = this.state.score
+      score[this.state.current] = result
+      this.setState({
+        score
+      })
+      if (this.state.current === questionsCount-1) {
+        updateScore((score.filter(s => s === true).length/questionsCount * 100).toFixed(0))
+        this.props.navigation.goBack()
+      }
+    }
     if (this.state.current < questionsCount-1) {
       this.setState({
           current: this.state.current + 1,
@@ -33,12 +46,14 @@ export default class Card extends PureComponent {
     }
   }
 
+
   render() {
-    const question = this.props.navigation.state.params.questions[this.state.current]
+    const question = this.props.navigation.state.params.deck.questions[this.state.current]
+    const questionsCount = this.props.navigation.state.params.deck.questions.length
     return(
       <Container>
         <Question>
-          { question.question }
+          { question.question } ({ this.state.current+1 }/{questionsCount})
         </Question>
         <Button onPress={() => this.setState({ showAnswer: true })} outline>
           <ButtonLabel outline>
@@ -49,10 +64,10 @@ export default class Card extends PureComponent {
           { this.state.showAnswer ? question.answer : '' }
         </Answer>
         <AnswerButtons>
-          <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={this.correctAnswer}>
+          <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => this.answer(true)}>
             <MaterialIcons name='check-circle' size={55} color='green'/>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
+          <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => this.answer(false)}>
             <MaterialIcons name='cancel' size={55} color='red'/>
           </TouchableOpacity>
         </AnswerButtons>

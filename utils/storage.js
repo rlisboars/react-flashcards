@@ -14,7 +14,7 @@ export const initialData = [{
         answer: 'Answer 3',
       },
     ],
-    statistics: {}
+    statistics: [50,20,30]
   },
   {
     title: 'Deck 2',
@@ -32,12 +32,12 @@ export const initialData = [{
         answer: 'Answer 3',
       },
     ],
-    statistics: {}
+    statistics: []
   },
   {
     title: 'Deck 3',
     questions: [
     ],
-    statistics: {}
+    statistics: []
   }
 ]

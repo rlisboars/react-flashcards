@@ -10,11 +10,28 @@ import Colors from '../../utils/colors'
 export default class DeckDetail extends PureComponent {
   constructor(props) {
     super(props)
+    const { deck } = this.props
+    this.state = {
+      deck
+    }
+  }
+
+  updateScore = (lastScore) => {
+    let { deck } = this.state
+    let lastStatistics = this.state.deck.statistics
+    if (lastStatistics === 6) lastStatistics.pop()
+    lastStatistics.unshift(lastScore)
+    deck.statistics = lastStatistics
+    this.setState({
+      deck
+    })
+    this.forceUpdate()
   }
 
   render() {
     const { navigate } = this.props.navigation
-    const { deck } = this.props
+    const { deck } = this.state
+    const { statistics } = this.state.deck
     return (
       <Container>
         <SubHeader>
@@ -39,17 +56,21 @@ export default class DeckDetail extends PureComponent {
         <Deck>  
           <CardsQtt>{deck.questions.length}</CardsQtt>
           <CardsLabel>cards</CardsLabel>
-          <Label>last score</Label>
-          <Score green>80%</Score>
-          <Label>score history</Label>
-          <HistoryContainer>
-            <HistoryScore green>80%</HistoryScore>
-            <HistoryScore>70%</HistoryScore>
-            <HistoryScore green>100%</HistoryScore>
-            <HistoryScore green>100%</HistoryScore>
-            <HistoryScore green>100%</HistoryScore>
-          </HistoryContainer>
-          <Button onPress={() => navigate('Card', deck)}>
+          { statistics.length > 0 &&
+            <Container>
+              <Label>last score</Label>
+              <Score green={statistics[0] >= statistics[1] || !statistics[1] ? true : false}>{statistics[0]}%</Score>
+              <Label>score history (from recent to oldest)</Label>
+              <HistoryContainer>
+                <HistoryScore green={statistics[1] >= statistics[2] || !statistics[2] ? true : false}>{statistics[1] ? statistics[1]+'%' : 'NA'}</HistoryScore>
+                <HistoryScore green={statistics[2] >= statistics[3] || !statistics[3] ? true : false}>{statistics[2] ? statistics[2]+'%' : 'NA'}</HistoryScore>
+                <HistoryScore green={statistics[3] >= statistics[4] || !statistics[4] ? true : false}>{statistics[3] ? statistics[3]+'%' : 'NA'}</HistoryScore>
+                <HistoryScore green={statistics[4] >= statistics[5] || !statistics[5] ? true : false}>{statistics[4] ? statistics[4]+'%' : 'NA'}</HistoryScore>
+                <HistoryScore green={statistics[5] ? true : false}>{statistics[5] ? statistics[5]+'%' : 'NA'}</HistoryScore>
+              </HistoryContainer>
+            </Container>
+          }
+          <Button onPress={() => navigate('Card', { deck, updateScore: this.updateScore })}>
             <ButtonLabel>start</ButtonLabel>
           </Button>
           <Button onPress={() => navigate('AddCard')} outline>

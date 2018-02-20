@@ -5,9 +5,8 @@ import Colors from '../../utils/colors'
 
 export default class DeckSwiper extends PureComponent {
   static navigationOptions = {
-    title: 'decks details',
+    title: 'deck details',
     headerTintColor: Colors.grade6,
-    headerBackTitle: null,
     headerStyle: {
       backgroundColor: Colors.grade4
     }
@@ -43,3 +42,4 @@ export default class DeckSwiper extends PureComponent {
     )
   }
 }
+
