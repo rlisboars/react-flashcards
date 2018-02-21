@@ -70,9 +70,11 @@ export default class DeckDetail extends PureComponent {
               </HistoryContainer>
             </Container>
           }
-          <Button onPress={() => navigate('Card', { deck, updateScore: this.updateScore })}>
-            <ButtonLabel>start</ButtonLabel>
-          </Button>
+          {deck.questions.length > 0 &&
+            <Button onPress={() => navigate('CardsList', { deck, updateScore: this.updateScore })}>
+              <ButtonLabel>start</ButtonLabel>
+            </Button>
+          }
           <Button onPress={() => navigate('AddCard')} outline>
             <ButtonLabel outline>add card</ButtonLabel>
           </Button>

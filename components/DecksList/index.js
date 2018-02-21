@@ -1,16 +1,37 @@
+import { FlatList, TouchableOpacity, TouchableWithoutFeedback, AsyncStorage, Modal, View, TextInput, Text, Keyboard } from 'react-native'
 import React, { PureComponent } from 'react'
-import { FlatList, TouchableOpacity, AsyncStorage } from 'react-native'
 import styled from 'styled-components/native'
 import Colors from '../../utils/colors'
-import { DeckView, DeckTitle,  DeckInfo, DeckCardsQtt, DeckCardsLabel } from './styles'
-import { navOptions } from '../styles'
+import { DeckView, DeckTitle,  DeckInfo, DeckCardsQtt, DeckCardsLabel, ModalOuterView, ModalInnerView, ModalTextInput } from './styles'
+import { MaterialIcons } from '@expo/vector-icons'
+import { navOptions, Container, Button, ButtonLabel } from '../styles'
 import { initialData } from '../../utils/storage'
 
 export default class DecksList extends PureComponent {
-  static navigationOptions = {
-    title: 'FLASHCARDS',
-    headerBackTitle: null,
-    ...navOptions,
+  state = {
+    modalVisible: false,
+    data: [],
+    deckTitle: ''
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state 
+    return {
+      title: 'FLASHCARDS',
+      headerBackTitle: null,
+      headerRight: <MaterialIcons name='add' color={Colors.grade6} size={32} onPress={() => params.handleAdd()} />,
+      ...navOptions,
+    }
+  }
+
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        title: 'test',
+        id: 'test',
+        systemItem: 'add'
+      }
+    ]
   }
 
   componentDidMount() {
@@ -24,9 +45,10 @@ export default class DecksList extends PureComponent {
           this.setState({ data: JSON.parse(result) })
         }
       })
+    this.props.navigation.setParams({ handleAdd: this.changeModalVisibility })
   }
 
-  _renderItem = ({ item }) => {
+  renderItem = ({ item }) => {
     const { key, title, cardsQtt } = item
     const { navigate } = this.props.navigation
     return (
@@ -41,6 +63,21 @@ export default class DecksList extends PureComponent {
       </TouchableOpacity>
     )
   }
+
+  changeModalVisibility = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible
+    })
+  }
+
+  saveNewDeck = (evt) => {
+    evt.preventDefault()
+    this.changeModalVisibility()
+    this.setState({ 
+      deckTitle: '',
+      data: [...this.state.data, { title: this.state.deckTitle, questions: [], statistics: [] }]
+    })
+  }
   
   render() {
     const data = this.state ? this.state.data : []
@@ -50,12 +87,42 @@ export default class DecksList extends PureComponent {
     })
 
     return (
-      <FlatList 
-        style={{ backgroundColor: Colors.grade6 }}
-        data={listData}
-        renderItem={this._renderItem}
-      />
+      <Container>
+        <FlatList 
+          style={{ backgroundColor: Colors.grade6 }}
+          data={listData}
+          renderItem={this.renderItem}
+        />
+        <Modal 
+          visible={this.state.modalVisible}
+          animationType={'fade'}
+          transparent={true}
+        > 
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <ModalOuterView>
+              <ModalInnerView>
+                <ModalTextInput
+                  maxLength={30}
+                  placeholder='Input Deck title here!'
+                  editable={true}
+                  value={this.state.deckTitle}
+                  onChangeText={(text) => this.setState({ deckTitle: text })}
+                  onSubmitEditing={(evt) => this.saveNewDeck(evt)}
+                />
+                <Button onPress={this.saveNewDeck}>
+                  <ButtonLabel>Save</ButtonLabel>
+                </Button>
+                <Button onPress={this.changeModalVisibility} outline>
+                  <ButtonLabel outline>Cancel</ButtonLabel>
+                </Button>
+              </ModalInnerView>
+            </ModalOuterView>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </Container>
     )
   }
 }
+
+
 

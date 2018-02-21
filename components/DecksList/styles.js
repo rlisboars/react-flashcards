@@ -35,6 +35,26 @@ export const DeckCardsLabel = styled.Text`
   color: ${Colors.grade3};
   `
 
+export const ModalTextInput = styled.TextInput`
+  width: 350px;
+  height: 40px;
+  background-color: ${Colors.grade6};
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`
+export const ModalOuterView = styled.View`
+  flex: 1;
+  background-color: rgba(49,68,72,0.8);
+`
+export const ModalInnerView = styled.View`
+  margin-top: 100px;
+  justify-content: center;
+  align-items: center;
+  background-color: ${Colors.grade4};
+`
+
 export const navOptions = {
   headerTintColor: Colors.grade6,
   headerStyle: {

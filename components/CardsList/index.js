@@ -4,7 +4,7 @@ import { Container, Button, ButtonLabel, navOptions } from '../styles'
 import { Question, Answer, AnswerButtons } from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 
-export default class Card extends PureComponent {
+export default class CardsList extends PureComponent {
 
   static navigationOptions = ({navigation}) => {
     const { title } = navigation.state.params

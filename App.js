@@ -6,7 +6,7 @@ import DecksList from './components/DecksList'
 import DeckDetail from './components/DeckDetail'
 import DeckSwiper from './components/DeckSwiper'
 import AddCard from './components/AddCard'
-import Card from './components/Card'
+import CardsList from './components/CardsList'
 import Colors from './utils/colors'
 
 const MainNavigator = StackNavigator({
@@ -19,8 +19,8 @@ const MainNavigator = StackNavigator({
    AddCard: {
      screen: AddCard,
    },
-  Card: {
-    screen: Card
+   CardsList: {
+    screen: CardsList
   }
 })
 
