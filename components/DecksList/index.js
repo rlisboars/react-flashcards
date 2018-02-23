@@ -5,7 +5,7 @@ import Colors from '../../utils/colors'
 import { DeckView, DeckTitle,  DeckInfo, DeckCardsQtt, DeckCardsLabel, ModalOuterView, ModalInnerView, ModalTextInput } from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
 import { navOptions, Container, Button, ButtonLabel } from '../styles'
-import { initialData } from '../../utils/storage'
+import { DeckStorage } from '../../utils/storage'
 
 export default class DecksList extends PureComponent {
   state = {
@@ -35,16 +35,7 @@ export default class DecksList extends PureComponent {
   }
 
   componentDidMount() {
-    AsyncStorage.removeItem('deckData')
-    AsyncStorage.getItem('deckData')
-      .then(result => {
-        if (!result) {
-          AsyncStorage.setItem('deckData', JSON.stringify(initialData))
-          this.setState({ data: initialData })
-        } else { 
-          this.setState({ data: JSON.parse(result) })
-        }
-      })
+    DeckStorage.fetch().then(result => this.setState({ data: result }))
     this.props.navigation.setParams({ handleAdd: this.changeModalVisibility })
   }
 
@@ -52,7 +43,7 @@ export default class DecksList extends PureComponent {
     const { key, title, cardsQtt } = item
     const { navigate } = this.props.navigation
     return (
-      <TouchableOpacity onPress={() => navigate('DeckSwiper', { data: this.state.data, selected: key })}>
+      <TouchableOpacity onPress={() => navigate('DeckSwiper', { data: this.state.data, selected: key, updateData: this.updateData })}>
         <DeckView>
           <DeckTitle>{title}</DeckTitle>
           <DeckInfo>
@@ -76,11 +67,20 @@ export default class DecksList extends PureComponent {
     this.setState({ 
       deckTitle: '',
       data: [...this.state.data, { title: this.state.deckTitle, questions: [], statistics: [] }]
-    })
+    }, () => DeckStorage.save(this.state.data))
   }
-  
+
+  updateData = (idx, deck) => {
+    let data  = this.state.data.slice()
+    data[idx] = deck
+    this.setState({
+      data
+    }, () => DeckStorage.save(this.state.data))
+    
+  }
+
   render() {
-    const data = this.state ? this.state.data : []
+    const data = this.state.data
     let listData =[]
     data.map((deck, idx) => {
       listData.push({ key: idx, title: deck.title, cardsQtt: deck.questions.length })

@@ -23,6 +23,13 @@ export default class DeckSwiper extends PureComponent {
     }
   }
 
+/*   updateData = (deck) => {
+    const { updateData } = this.props.navigation.state.params
+    console.log('DeckSwiper')
+    updateData(deck)
+
+  }
+ */
   render() {
     const { data, selected } = this.props.navigation.state.params
     return (
@@ -35,7 +42,8 @@ export default class DeckSwiper extends PureComponent {
                       deck={deck} 
                       key={idx} 
                       first={idx === 0}
-                      last={idx === data.length-1}/>
+                      last={idx === data.length-1}
+                  />
           })
         }
       </Swiper>

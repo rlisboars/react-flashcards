@@ -19,12 +19,25 @@ export default class DeckDetail extends PureComponent {
   updateScore = (lastScore) => {
     let { deck } = this.state
     let lastStatistics = this.state.deck.statistics
+    const {updateData, selected} = this.props.navigation.state.params
     if (lastStatistics === 6) lastStatistics.pop()
     lastStatistics.unshift(lastScore)
     deck.statistics = lastStatistics
     this.setState({
       deck
     })
+    updateData(selected, this.state.deck)
+    this.forceUpdate()
+  }
+
+  addCard = (card) => {
+    let deck = this.state.deck
+    const {updateData, selected} = this.props.navigation.state.params
+    deck.questions.push(card)
+    this.setState({
+      deck
+    })
+    updateData(selected, this.state.deck)
     this.forceUpdate()
   }
 
@@ -32,6 +45,7 @@ export default class DeckDetail extends PureComponent {
     const { navigate } = this.props.navigation
     const { deck } = this.state
     const { statistics } = this.state.deck
+
     return (
       <Container>
         <SubHeader>
@@ -75,7 +89,7 @@ export default class DeckDetail extends PureComponent {
               <ButtonLabel>start</ButtonLabel>
             </Button>
           }
-          <Button onPress={() => navigate('AddCard')} outline>
+          <Button onPress={() => navigate('AddCard',{ addCard: this.addCard })} outline>
             <ButtonLabel outline>add card</ButtonLabel>
           </Button>
         </Deck>

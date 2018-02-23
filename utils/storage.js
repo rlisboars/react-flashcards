@@ -1,43 +1,17 @@
-export const initialData = [{
-    title: 'Deck 1',
-    questions: [
-      {
-        question: 'Question 1',
-        answer: 'Answer 1',
-      },
-      {
-        question: 'Question 2',
-        answer: 'Answer 2',
-      },
-      {
-        question: 'Question 3',
-        answer: 'Answer 3',
-      },
-    ],
-    statistics: [50,20,30]
-  },
-  {
-    title: 'Deck 2',
-    questions: [
-      {
-        question: 'Question 1',
-        answer: 'Answer 1',
-      },
-      {
-        question: 'Question 2',
-        answer: 'Answer 2',
-      },
-      {
-        question: 'Question 3',
-        answer: 'Answer 3',
-      },
-    ],
-    statistics: []
-  },
-  {
-    title: 'Deck 3',
-    questions: [
-    ],
-    statistics: []
+import { AsyncStorage } from 'react-native'
+
+export class DeckStorage {
+  static fetch() {
+    return AsyncStorage.getItem('deckData')
+      .then(result => {
+        if (!result) {
+          AsyncStorage.setItem('deckData', JSON.stringify([]))
+          return []
+        } else return JSON.parse(result)
+      })
   }
-]
+
+  static save(data) {
+    AsyncStorage.setItem('deckData', JSON.stringify(data))
+  }
+}
