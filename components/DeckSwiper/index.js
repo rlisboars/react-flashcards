@@ -4,12 +4,22 @@ import DeckDetail from '../DeckDetail'
 import Colors from '../../utils/colors'
 
 export default class DeckSwiper extends PureComponent {
+  state = {
+    data: []
+  }
+
   static navigationOptions = {
     title: 'deck details',
     headerTintColor: Colors.grade6,
     headerStyle: {
       backgroundColor: Colors.grade4
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      data: this.props.navigation.state.params.data
+    })
   }
 
   swipe = (direction) => {
@@ -23,15 +33,20 @@ export default class DeckSwiper extends PureComponent {
     }
   }
 
-/*   updateData = (deck) => {
-    const { updateData } = this.props.navigation.state.params
-    console.log('DeckSwiper')
-    updateData(deck)
-
+  deleteDeck = (idx) => {
+    const {selected, deleteDeck} = this.props.navigation.state.params
+    let data = this.state.data.slice()
+    data.splice(idx, 1)
+    this.setState({
+      data
+    })
+    deleteDeck(selected)
+    this.props.navigation.goBack()
   }
- */
+
   render() {
-    const { data, selected } = this.props.navigation.state.params
+    const { selected } = this.props.navigation.state.params
+    const { data } = this.state
     return (
       <Swiper index={selected} loop={false} showsPagination={false} loadMinimal={true} ref={component => this.swiper = component} >
         {
@@ -43,6 +58,7 @@ export default class DeckSwiper extends PureComponent {
                       key={idx} 
                       first={idx === 0}
                       last={idx === data.length-1}
+                      deleteDeck={this.deleteDeck}
                   />
           })
         }

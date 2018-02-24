@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { TouchableOpacity, Platform } from 'react-native'
+import { TouchableOpacity, Platform, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { SubHeader, Deck, 
         CardsLabel, CardsQtt, Label, Score, HistoryContainer,
@@ -39,6 +39,18 @@ export default class DeckDetail extends PureComponent {
     })
     updateData(selected, this.state.deck)
     this.forceUpdate()
+  }
+
+  deleteDeck = () => {
+    const {selected} = this.props.navigation.state.params
+    const {deleteDeck} = this.props
+    Alert.alert(
+      'Delete', 
+      'Do you really want to delete this deck and all its cards?',
+      [
+        {text: 'Yes', onPress: () => deleteDeck(selected)},
+        {text: 'Cancel'}
+    ])
   }
 
   render() {
@@ -91,6 +103,9 @@ export default class DeckDetail extends PureComponent {
           }
           <Button onPress={() => navigate('AddCard',{ addCard: this.addCard })} outline>
             <ButtonLabel outline>add card</ButtonLabel>
+          </Button>
+          <Button onPress={this.deleteDeck} outline>
+            <ButtonLabel outline>delete deck</ButtonLabel>
           </Button>
         </Deck>
       </Container>

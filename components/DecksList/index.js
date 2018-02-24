@@ -43,7 +43,7 @@ export default class DecksList extends PureComponent {
     const { key, title, cardsQtt } = item
     const { navigate } = this.props.navigation
     return (
-      <TouchableOpacity onPress={() => navigate('DeckSwiper', { data: this.state.data, selected: key, updateData: this.updateData })}>
+      <TouchableOpacity onPress={() => navigate('DeckSwiper', { data: this.state.data, selected: key, updateData: this.updateData, deleteDeck: this.deleteDeck })}>
         <DeckView>
           <DeckTitle>{title}</DeckTitle>
           <DeckInfo>
@@ -62,12 +62,16 @@ export default class DecksList extends PureComponent {
   }
 
   saveNewDeck = (evt) => {
-    evt.preventDefault()
-    this.changeModalVisibility()
-    this.setState({ 
-      deckTitle: '',
-      data: [...this.state.data, { title: this.state.deckTitle, questions: [], statistics: [] }]
-    }, () => DeckStorage.save(this.state.data))
+    let title = this.state.deckTitle
+    title.trim()
+    if (title !== '') {
+      evt.preventDefault()
+      this.changeModalVisibility()
+      this.setState({ 
+        deckTitle: '',
+        data: [...this.state.data, { title: this.state.deckTitle, questions: [], statistics: [] }]
+      }, () => DeckStorage.save(this.state.data))
+    }
   }
 
   updateData = (idx, deck) => {
@@ -78,6 +82,15 @@ export default class DecksList extends PureComponent {
     }, () => DeckStorage.save(this.state.data))
     
   }
+
+  deleteDeck = (idx) => {
+    let data = this.state.data.slice()
+    data.splice(idx, 1)
+    this.setState({
+      data
+    }, () => DeckStorage.save(this.state.data))
+  }
+
 
   render() {
     const data = this.state.data
