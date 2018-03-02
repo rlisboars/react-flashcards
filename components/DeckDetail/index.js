@@ -6,6 +6,7 @@ import { SubHeader, Deck,
         HistoryScore } from './styles'
 import { Container, Title, Button, ButtonLabel, navOptions } from '../styles'
 import Colors from '../../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../../utils/notification'
 
 export default class DeckDetail extends PureComponent {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class DeckDetail extends PureComponent {
     this.setState({
       deck
     })
+    clearLocalNotification().then(setLocalNotification())
     updateData(selected, this.state.deck)
     this.forceUpdate()
   }

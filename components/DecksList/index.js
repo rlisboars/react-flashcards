@@ -107,6 +107,7 @@ export default class DecksList extends PureComponent {
           renderItem={this.renderItem}
         />
         <Modal 
+          onRequestClose={() => ''}
           visible={this.state.modalVisible}
           animationType={'fade'}
           transparent={true}

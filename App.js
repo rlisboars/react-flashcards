@@ -8,6 +8,7 @@ import DeckSwiper from './components/DeckSwiper'
 import AddCard from './components/AddCard'
 import CardsList from './components/CardsList'
 import Colors from './utils/colors'
+import { setLocalNotification } from './utils/notification'
 
 const MainNavigator = StackNavigator({
   DecksList: {
@@ -25,6 +26,9 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render() {
     return (
       <View style={{ flex: 1 }}>
