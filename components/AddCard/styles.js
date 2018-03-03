@@ -19,3 +19,20 @@ export const CardInput = styled.TextInput`
   text-align-vertical: top;
   font-size: 15px;
 `
+
+export const ModalOuterView = styled.View`
+  flex: 1;
+  background-color: rgba(49,68,72,0.8);
+`
+
+export const ModalInnerView = styled.View`
+  margin: 100px 20px 20px 20px;
+  background-color: white;
+`
+
+export const Score = styled.Text`
+  font-size: 64px;
+  align-self: center;
+  background-color: rgba(0,0,0,0);
+`
+

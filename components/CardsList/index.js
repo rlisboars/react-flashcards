@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, Modal } from 'react-native'
 import { Container, Button, ButtonLabel, navOptions } from '../styles'
 import { Question, Answer, AnswerButtons } from './styles'
 import { MaterialIcons } from '@expo/vector-icons'
+import { ModalOuterView, ModalInnerView, Label, Score } from '../AddCard/styles'
 
 export default class CardsList extends PureComponent {
 
@@ -20,6 +21,7 @@ export default class CardsList extends PureComponent {
     this.state = {
       current: 0, 
       showAnswer: false,
+      showResults: undefined,
       score: Array(props.navigation.state.params.deck.questions.length).fill(false)
     }
   }
@@ -34,8 +36,9 @@ export default class CardsList extends PureComponent {
         score
       })
       if (this.state.current === questionsCount-1) {
-        updateScore((score.filter(s => s === true).length/questionsCount * 100).toFixed(0))
-        this.props.navigation.goBack()
+        const grade = (score.filter(s => s === true).length/questionsCount * 100).toFixed(0)
+        updateScore(grade)
+        this.setState({ showResults: grade })
       }
     }
     if (this.state.current < questionsCount-1) {
@@ -44,6 +47,15 @@ export default class CardsList extends PureComponent {
           showAnswer: false 
       })
     }
+  }
+
+  reset = () => {
+    this.setState({
+      current: 0, 
+      showAnswer: false,
+      showResults: undefined,
+      score: Array(this.props.navigation.state.params.deck.questions.length).fill(false)
+    })
   }
 
 
@@ -71,6 +83,26 @@ export default class CardsList extends PureComponent {
             <MaterialIcons name='cancel' size={55} color='red'/>
           </TouchableOpacity>
         </AnswerButtons>
+        <Modal
+          onRequestClose={() => ''}
+          visible={this.state.showResults >= 0}
+          animationType={'fade'}
+          transparent={true}
+          style={{ backgroundColor: 'black' }}
+        >
+          <ModalOuterView>
+            <ModalInnerView>       
+            <Label>Score</Label>
+            <Score>{this.state.showResults}%</Score>
+            <Button onPress={this.reset}>
+              <ButtonLabel>restart</ButtonLabel>
+            </Button>
+            <Button onPress={() => this.props.navigation.goBack()}>
+              <ButtonLabel>back</ButtonLabel>
+            </Button>
+            </ModalInnerView>
+          </ModalOuterView>
+        </Modal>
       </Container>
     )
   }

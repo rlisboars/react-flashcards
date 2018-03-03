@@ -1,5 +1,6 @@
 # Flashcards
 A React-Native project developed for [Udacity React Nanodegree](https://br.udacity.com/course/react-nanodegree--nd019) by [rlisboars](https://github.com/rlisboars/)
+Tested on iPhone and Android.
 
 ## Setup
 

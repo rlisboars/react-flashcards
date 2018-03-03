@@ -27,7 +27,7 @@ export default class DeckDetail extends PureComponent {
     this.setState({
       deck
     })
-    clearLocalNotification().then(setLocalNotification())
+    clearLocalNotification().then(setLocalNotification)
     updateData(selected, this.state.deck)
     this.forceUpdate()
   }

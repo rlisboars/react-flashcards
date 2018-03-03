@@ -63,6 +63,7 @@ export default class DecksList extends PureComponent {
 
   saveNewDeck = (evt) => {
     let title = this.state.deckTitle
+    const { navigate } = this.props.navigation
     title.trim()
     if (title !== '') {
       evt.preventDefault()
@@ -70,7 +71,10 @@ export default class DecksList extends PureComponent {
       this.setState({ 
         deckTitle: '',
         data: [...this.state.data, { title: this.state.deckTitle, questions: [], statistics: [] }]
-      }, () => DeckStorage.save(this.state.data))
+      }, () => { 
+        DeckStorage.save(this.state.data)
+        navigate('DeckSwiper', { data: this.state.data, selected: this.state.data.length-1, updateData: this.updateData, deleteDeck: this.deleteDeck })
+      })
     }
   }
 
