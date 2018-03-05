@@ -102,7 +102,7 @@ export default class DecksList extends PureComponent {
     data.map((deck, idx) => {
       listData.push({ key: idx, title: deck.title, cardsQtt: deck.questions.length })
     })
-
+    
     return (
       <Container>
         <FlatList 

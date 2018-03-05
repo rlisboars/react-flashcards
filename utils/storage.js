@@ -5,9 +5,16 @@ export class DeckStorage {
     return AsyncStorage.getItem('deckData')
       .then(result => {
         if (!result) {
-          AsyncStorage.setItem('deckData', JSON.stringify([]))
-          return []
-        } else return JSON.parse(result)
+          const exampleDeck = { 
+            title: "Example deck", 
+            questions: [{ question: "What framework was used to develop this App  ", answer: "React Native" }],
+            statistics: []
+          }
+          AsyncStorage.setItem('deckData', JSON.stringify([exampleDeck]))
+          return [exampleDeck]
+        } else {
+          return JSON.parse(result)
+        }
       })
   }
 
